@@ -62,4 +62,7 @@ type IFaceRepository interface {
 
 	// order history status
 	CreateManyOrderHistoryStatus(ctx context.Context, data []*model.OrderHistoryStatus, db *gorm.DB) error
+
+	// media
+	CreateMedia(ctx context.Context, data *model.Media, db *gorm.DB) error
 }

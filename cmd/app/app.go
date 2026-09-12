@@ -15,6 +15,7 @@ import (
 	"github.com/ffajarpratama/pos-wash-api/internal/repository"
 	"github.com/ffajarpratama/pos-wash-api/internal/router"
 	"github.com/ffajarpratama/pos-wash-api/internal/usecase"
+	"github.com/ffajarpratama/pos-wash-api/pkg/cloudinary"
 	"github.com/ffajarpratama/pos-wash-api/pkg/postgres"
 	"github.com/ffajarpratama/pos-wash-api/pkg/util"
 )
@@ -29,11 +30,17 @@ func Exec() (err error) {
 		return err
 	}
 
+	cld, err := cloudinary.NewClient(cnf)
+	if err != nil {
+		return err
+	}
+
 	repo := repository.New(db)
 	uc := usecase.New(&usecase.Usecase{
-		Cnf:  cnf,
-		Repo: repo,
-		DB:   db,
+		Cnf:      cnf,
+		Repo:     repo,
+		DB:       db,
+		Uploader: cld,
 	})
 
 	handler := router.NewHTTPHandler(cnf, uc)

@@ -52,4 +52,7 @@ type IFaceUsecase interface {
 	// dashboard
 	GetDashboardSummary(ctx context.Context, outletID uuid.UUID) (*response.DashoardSummary, error)
 	GetOrderTrend(ctx context.Context, params *request.OrderTrendQuery) (*response.OrderTrend, error)
+
+	// media
+	CreateMedia(ctx context.Context, req *request.CreateMedia) (*model.Media, error)
 }

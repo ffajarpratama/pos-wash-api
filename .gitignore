@@ -24,3 +24,8 @@ go.work
 tmp
 dbconfig.yml
 .DS_Store
+
+.claude
+
+.graphify/
+graphify-out/

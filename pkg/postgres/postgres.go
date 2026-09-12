@@ -30,5 +30,21 @@ func NewDBClient(cnf *config.Config) (*gorm.DB, error) {
 		return nil, err
 	}
 
+	db, err := conn.DB()
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatal("[error: db.Ping()] \n", err.Error())
+		return nil, err
+	}
+
+	log.Println("[postgres-connected]")
+
+	db.SetMaxIdleConns(20)
+	db.SetMaxOpenConns(100)
+
 	return conn, nil
 }

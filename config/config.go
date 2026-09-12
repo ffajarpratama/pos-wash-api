@@ -6,17 +6,14 @@ import (
 	"github.com/spf13/viper"
 )
 
+var CLOUDINARY_BASE_URL string
+
 type Config struct {
-	App       App
-	JWTConfig JWTConfig
-	Postgres  Postgres
-	MongoDB   MongoDB
-	Redis     Redis
-	SMTP      SMTP
-	AWSConfig AWSConfig
-	Google    Google
-	Firebase  Firebase
-	ImgixURL  string
+	App        App
+	JWTConfig  JWTConfig
+	Postgres   Postgres
+	SMTP       SMTP
+	Cloudinary Cloudinary
 }
 
 type App struct {
@@ -41,23 +38,6 @@ type Postgres struct {
 	URI      string
 }
 
-type MongoDB struct {
-	Host     string
-	Port     string
-	DBName   string
-	User     string
-	Password string
-	URI      string
-}
-
-type Redis struct {
-	Host     string
-	Port     string
-	Address  string
-	Password string
-	Database int
-}
-
 type SMTP struct {
 	User      string
 	Pass      string
@@ -66,22 +46,15 @@ type SMTP struct {
 	EmailFrom string
 }
 
-type AWSConfig struct {
-	AccessKeyID     string
-	AccessKeySecret string
-	Bucket          string
-	Region          string
-	URL             string
+type Cloudinary struct {
+	CloudName string
+	APIKey    string
+	APISecret string
+	BaseURL   string
 }
 
 type Google struct {
 	ClientID string
-}
-
-type Firebase struct {
-	AndroidPackageName    string
-	IosBundleID           string
-	ServiceAccountKeyPath string
 }
 
 func New() *Config {
@@ -92,6 +65,8 @@ func New() *Config {
 
 	v := viper.GetViper()
 	viper.AutomaticEnv()
+
+	CLOUDINARY_BASE_URL = v.GetString("CLOUDINARY_BASE_URL")
 
 	return &Config{
 		App: App{
@@ -113,21 +88,6 @@ func New() *Config {
 			SSLMode:  v.GetString("POSTGRES_SSL_MODE"),
 			URI:      v.GetString("POSTGRES_URI"),
 		},
-		MongoDB: MongoDB{
-			Host:     v.GetString("MONGODB_HOST"),
-			Port:     v.GetString("MONGODB_PORT"),
-			DBName:   v.GetString("MONGODB_DATABASE"),
-			User:     v.GetString("MONGODB_USER"),
-			Password: v.GetString("MONGODB_PASSWORD"),
-			URI:      v.GetString("MONGODB_URI"),
-		},
-		Redis: Redis{
-			Host:     v.GetString("REDIS_HOST"),
-			Port:     v.GetString("REDIS_PORT"),
-			Address:  v.GetString("REDIS_ADDRESS"),
-			Password: v.GetString("REDIS_PASSWORD"),
-			Database: v.GetInt("REDIS_DATABASE"),
-		},
 		SMTP: SMTP{
 			User:      v.GetString("SMTP_USER"),
 			Pass:      v.GetString("SMTP_PASSWORD"),
@@ -135,21 +95,11 @@ func New() *Config {
 			Port:      v.GetInt("SMTP_PORT"),
 			EmailFrom: v.GetString("EMAIL_FROM"),
 		},
-		AWSConfig: AWSConfig{
-			AccessKeyID:     v.GetString("AWS_ACCESS_KEY_ID"),
-			AccessKeySecret: v.GetString("AWS_SECRET_ACCESS_KEY"),
-			Bucket:          v.GetString("AWS_BUCKET"),
-			Region:          v.GetString("AWS_REGION"),
-			URL:             v.GetString("AWS_URL"),
+		Cloudinary: Cloudinary{
+			CloudName: v.GetString("CLOUDINARY_NAME"),
+			APIKey:    v.GetString("CLOUDINARY_API_KEY"),
+			APISecret: v.GetString("CLOUDINARY_API_SECRET"),
+			BaseURL:   CLOUDINARY_BASE_URL,
 		},
-		Google: Google{
-			ClientID: v.GetString("GOOGLE_CLIENT_ID"),
-		},
-		Firebase: Firebase{
-			AndroidPackageName:    v.GetString("ANDROID_PACKAGE_NAME"),
-			IosBundleID:           v.GetString("IOS_BUNDLE_ID"),
-			ServiceAccountKeyPath: v.GetString("SERVICE_ACCOUNT_KEY_PATH"),
-		},
-		ImgixURL: v.GetString("IMGIX_URL"),
 	}
 }

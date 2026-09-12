@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
@@ -76,7 +77,7 @@ func Logger(h http.Handler) http.Handler {
 				log.Printf(`{"@auth":{"user_id":%s,"outlet_id:%s","role":%s}}`, claims.ID, claims.OutletID, claims.Role)
 			}
 
-			if len(b) > 0 {
+			if len(b) > 0 && !strings.Contains(r.RequestURI, "media") {
 				log.Printf(`{"@request":%s}`, string(b))
 			}
 		}()

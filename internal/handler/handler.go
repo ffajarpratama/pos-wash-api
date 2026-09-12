@@ -34,6 +34,10 @@ func NewV1Handler(cnf *config.Config, uc usecase.IFaceUsecase, v custom_validato
 	r.Group(func(private chi.Router) {
 		private.Use(middleware.AuthenticateUser(cnf.JWTConfig.Secret))
 
+		private.Route("/media", func(media chi.Router) {
+			media.Post("/", h.CreateMedia)
+		})
+
 		private.Route("/dashboard", func(dashboard chi.Router) {
 			dashboard.Get("/summary", h.GetDashboardSummary)
 			dashboard.Get("/order-trend", h.GetOrderTrend)
