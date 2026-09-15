@@ -1,6 +1,6 @@
 # pos-wash-api
 
-Backend API for **POS Wash (Awas Panic)** — a point-of-sale system for laundry / car-wash outlets: outlet management, services & pricing, customers, orders, payments, and a dashboard.
+Backend API for **POS Wash (Awash)** — a point-of-sale system for laundry outlets: outlet management, services & pricing, customers, orders, payments, and dashboard.
 
 [![Run In Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/30101452-8765e3f3-afcb-45c1-a16d-95271f9a9836?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D30101452-8765e3f3-afcb-45c1-a16d-95271f9a9836%26entityType%3Dcollection%26workspaceId%3D9a1fe7b6-d2c2-4a93-8249-b43452913c2d)
 
@@ -30,7 +30,7 @@ Backend API for **POS Wash (Awas Panic)** — a point-of-sale system for laundry
 
 ## Project structure
 
-```
+```plaintext
 cmd/            entrypoint + app wiring (config, DB, router, graceful shutdown)
 config/         viper config loader (.env)
 internal/
@@ -53,28 +53,25 @@ pkg/            integrations & helpers (postgres, cloudinary, jwt, hash,
 
 1. Copy the env template and fill in your values:
 
-   ```
+   ```bash
    cp .env.example .env
    ```
 
-   Required: `APP_*`, `POSTGRES_*`, `CLOUDINARY_*`, `JWT_SECRET`.
-   (`REDIS_*` keys are present in `.env.example` but unused by the app — leave blank.)
-
 2. Install dependencies:
 
-   ```
+   ```bash
    go mod download
    ```
 
 3. Run the server:
 
-   ```
+   ```bash
    go run ./cmd/main.go
    ```
 
    Or with hot reload ([air](https://github.com/air-verse/air)):
 
-   ```
+   ```bash
    air
    ```
 
@@ -84,7 +81,7 @@ Server listens on `APP_PORT` (see `.env`).
 
 All routes are mounted under `/api/v1/pos`. Public: `/auth/register`, `/auth/login`. Everything else requires a `Bearer` JWT from login.
 
-Request/response shapes are documented in the Postman collection linked above — treat it as the source of truth over hand-written docs here.
+Request/response shapes are documented in the Postman collection linked above.
 
 ## Roadmap
 
